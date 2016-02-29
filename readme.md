@@ -1,4 +1,4 @@
-# OnoSW
+# OnoSW - VM
 OnoSW is the software framework for [social robot Ono](http://www.industrialdesigncenter.be/ono/), to be used in conjunction with [Ono2](https://github.com/cesarvandevelde/Ono2) and [OnoHAT](https://github.com/cesarvandevelde/OnoHAT).
 
 # Hardware Requirements
@@ -47,7 +47,7 @@ This step is not strictly necessary, but will result in a massive speedup when p
     ```
     sudo raspi-config
     ```
-    
+
     Go to advanced, A5 Device Tree --> Disable, A6 SPI --> Enable, A7 --> I2C enable.
 
 10. Edit /etc/modules:
@@ -55,9 +55,9 @@ This step is not strictly necessary, but will result in a massive speedup when p
     ```
     sudo nano /etc/modules
     ```
-    
+
     Enter the following configuration:
-    
+
     ```
     # /etc/modules: kernel modules to load at boot time.
     #
@@ -75,18 +75,18 @@ This step is not strictly necessary, but will result in a massive speedup when p
     snd_soc_rpi_dac
     ```
     Edit /etc/modprobe.d/raspi-blacklist.conf and make the file is empty. (no modules blacklisted)  
-    
+
     ```
     sudo nano /etc/modprobe.d/raspi-blacklist.conf
     ```
 11. Configure ALSA:
-    
+
     ```
     sudo nano /etc/asound.conf
     ```
-    
+
     Enter the following configuration:
-    
+
     ```
     pcm.!default {
       type        softvol
@@ -107,19 +107,19 @@ This step is not strictly necessary, but will result in a massive speedup when p
       }
     }
     ```
-    
+
     Reboot the Raspberry Pi:
-    
+
     ```
     sudo reboot
     ```
-    
+
     Lower the master sound volume to something reasonable (limits 0-255):
-    
+
     ```
     amixer set Master 128
     ```
-    
+
 12. [Install PicoTTS](http://rpihome.blogspot.be/2015/02/installing-pico-tts.html)
 13. [Setup and configure the WiFi dongle](http://elinux.org/RPI-Wireless-Hotspot)  
 Use the following configuration for /etc/hostapd/hostapd.conf:
