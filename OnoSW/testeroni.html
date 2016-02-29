@@ -1,0 +1,364 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Ono web interface - Social Script</title>
+	<link rel="stylesheet" href="static/css/foundation.css" />
+	<link rel="stylesheet" href="static/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="static/css/roboto.css" />
+	<link rel="stylesheet" href="static/css/ono.css" />
+	<script src="static/js/vendor/modernizr.js"></script>
+	<style>
+	#errors .alert-box:first-child {
+		margin-top: 2rem;
+	}
+
+
+	.fullscreen {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+	}
+
+	.actionbar .filebox {
+		color: #fff;
+		display: inline-block;
+	}
+
+	.actionbar .filebox .filename {
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+
+	.actionbar .filebox .status {
+		font-size: 0.75rem;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+
+
+	/*.fa.fa-grip-large:before {
+		content: "\f142 \202F \f142 \202F \f142 \202F \f142 \202F";
+	}*/
+
+	.gripper{
+		background: url(gripper.png) no-repeat;
+		/*width: 17px;
+		height: 33px;*/
+		width: 1.25rem;
+		height: 2.5rem;
+		margin-bottom: 1.8rem;
+		margin-right: 0.5rem;
+		display: inline-block;
+		cursor: ns-resize;
+		background-size: 100%;
+		/*border: 1px solid #0f0;*/
+	}
+
+	.tts-switch {
+		display: inline;
+	}
+	.tts-switch label{
+		background-color: #4D4D4D;
+	}
+
+	.tts-switch input:checked + label {
+		background-color: #4D4D4D;
+	}
+
+	.tts-switch .switch-on {
+		position: absolute;
+		left: -3.3rem;
+		top: 0.5rem;
+		color: white;
+		font-size: 1rem;
+	}
+
+	.tts-switch .switch-off {
+		position: absolute;
+		left: -1.6rem;
+		top: 0.5rem;
+		color: white;
+		font-size: 1rem;
+	}
+
+
+	.sliderrow {
+		margin-bottom: 1rem !important;
+	}
+
+	.sliderrow:last-child{
+		margin-bottom: 0 !important;
+	}
+
+	.sliderrow .range-slider{
+		margin: 0;
+	}
+
+	.sliderrow .numberstop {
+		font-size: 0.75rem;
+		line-height: 1rem;
+		font-weight: bold;
+		padding: 0 0 0.5rem 0;
+	}
+
+	.sliderrow .numbersbottom {
+		font-size: 0.75rem;
+		line-height: 1rem;
+		font-weight: 300;
+		padding: 0.5rem 0 0 0;
+	}
+
+
+
+	</style>
+</head>
+<body>
+	<div class="row">
+		<div class="large-12 columns">
+			<div id="topbar">
+				<div class="row">
+					<div class="small-12 medium-6 columns">
+						<div id="activity">
+							<span id="statusicon"><i class="fa fa-cog fa-spin"></i></span>
+							<span id="status">Ono is currently running:</span><br/>
+							<span id="currentapp">Virtual Model</span>
+						</div>
+					</div>
+					<div class="small-12 medium-6 columns clearfix">
+						<a href="#" data-reveal-id="ShutdownModal" class="action has-tip" data-tooltip aria-haspopup="true" data-options="disable_for_touch:true" title="Shut down"><div class="icon fa-power-off"></div></a>
+						<a href="/logout" class="action has-tip" data-tooltip aria-haspopup="true" data-options="disable_for_touch:true" title="Log out"><div class="icon fa-sign-out"></div></a>
+						<a href="/" class="action has-tip" data-tooltip aria-haspopup="true" data-options="disable_for_touch:true" title="Home"><div class="icon fa-home"></div></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="small-12 columns">
+			<div class="page">
+				<div class="titlebar">
+					<a href="#" data-reveal-id="CloseAppModal" class="closebutton"><span class="fa fa-close"></span></a>
+					Virtual Model
+				</div>
+				<div class="content" id="content">
+					<div class="actionbar">
+						<div class="filebox">
+							<span class="filename">Untitled script</span> <span class="fa fa-asterisk"></span><br>
+							<span class="fa fa-pencil" style="font-size: 0.75rem;"></span> <span class="status">Editing</span>
+						</div>
+						<div class="spacer"></div>
+						<a href="#"  id="btnSave" class="action">
+							<span class="fa fa-save"></span><br/>
+							<span class="text">Save</span>
+						</a>
+						<a href="#"  id="btnFiles" class="action">
+							<span class="fa fa-folder"></span><br/>
+							<span class="text">All files</span>
+						</a>
+						<a href="#"  id="btnNew" class="action">
+							<span class="fa fa-file"></span><br/>
+							<span class="text">New</span>
+						</a>
+						<div class="spacer"></div>
+						<a href="#" id="btnLock" class="action">
+							<span class="fa fa-unlock"></span><br/>
+							<span class="text">Unlocked</span>
+						</a>
+					</div>
+
+
+					<div style="display: table; width: 100%;">
+						<div style="display: table-cell; width: 2rem; background: #aaa;">
+							a
+						</div>
+						<div style="display: table-cell; width: 6rem; background: #aaa;">
+							b
+						</div>
+						<div style="display: table-cell; width: 5rem; background: #aaa;">
+							c
+						</div>
+						<div style="display: table-cell; background: #aaa;">
+							d
+						</div>
+						<div style="display: table-cell; width: 7rem; background: #aaa;">
+							e
+						</div>
+					</div>
+
+
+					<div class="row">
+						<div class="large-7 large-push-5 columns">
+							<canvas id="virtualModel" width="600" height="600" style="width: 100%;"></canvas>
+						</div>
+						<div class="large-5 large-pull-7 columns" style="text-align: justify;">
+							<div style="height: 10rem;" class="show-for-large-up"></div>
+							<div class="panel">
+								<div class="row">
+									<div class="small-6 columns">
+										<strong>Valence:</strong> <span id="lblVal">0.000</span><br/>
+										<strong>Arousal:</strong> <span id="lblAr">0.000</span><br/>
+										<strong>DOF1:</strong> <span id="dof1">0.000</span><br/>
+										<strong>DOF2:</strong> <span id="dof2">0.000</span><br/>
+										<strong>DOF3:</strong> <span id="dof3">0.000</span><br/>
+										<strong>DOF4:</strong> <span id="dof4">0.000</span><br/>
+										<strong>DOF5:</strong> <span id="dof5">0.000</span><br/>
+										<strong>DOF6:</strong> <span id="dof6">0.000</span><br/>
+										<strong>DOF7:</strong> <span id="dof7">0.000</span>
+									</div>
+									<div class="small-6 columns">
+										<strong>Phi:</strong> <span id="lblPhi">0.000°</span><br/>
+										<strong>R:</strong> <span id="lblR">0.000</span>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="row">
+								<div class="small-12 columns" id="errors"></div>
+							</div>
+						</div>
+					</div>
+
+
+					{% block page_content %}
+					<div id="errors">
+						{% with messages = get_flashed_messages(category_filter=["message"]) %}
+							{% if messages %}
+								{% for message in messages %}
+									<div data-alert class="alert-box secondary radius">
+										{{ message }}
+										<a href="#" class="close">&times;</a>
+									</div>
+								{% endfor %}
+							{% endif %}
+						{% endwith %}
+						{% with messages = get_flashed_messages(category_filter=["error"]) %}
+							{% if messages %}
+								{% for message in messages %}
+									<div data-alert class="alert-box alert radius">
+										{{ message }}
+										<a href="#" class="close">&times;</a>
+									</div>
+								{% endfor %}
+							{% endif %}
+						{% endwith %}
+						{% with messages = get_flashed_messages(category_filter=["success"]) %}
+							{% if messages %}
+								{% for message in messages %}
+									<div data-alert class="alert-box success radius">
+										{{ message }}
+										<a href="#" class="close">&times;</a>
+									</div>
+								{% endfor %}
+							{% endif %}
+						{% endwith %}
+					</div>
+
+					<div class="row">
+						<div class="small-6 columns">
+							<a href="#" id="btnEnable" class="button" style="width: 100%;"><span class="fa fa-check"></span> Enable Servos</a>
+						</div>
+						<div class="small-6 columns">
+							<a href="#" id="btnDisable" class="button" style="width: 100%;"><span class="fa fa-close"></span> Disable Servos</a>
+						</div>
+					</div>
+
+					{% if dofs %}
+						{% for dof in dofs %}
+							<div class="sliderrow row">
+								<div class="small-12 columns hide-for-medium-up"><strong>Dof1</strong></div>
+								<div class="medium-3 large-2 show-for-medium-up columns">
+									<strong>Dof1</strong><br>
+									<span class="note" style="padding: 0;">
+										<strong>Pin:</strong>dofpin1<br>
+										<strong>DOF:</strong> <span data-dof>1</span><br>
+										<strong>Servo:</strong> <span data-us>1</span> &micro;s<br>
+									</span>
+								</div>
+								<div class="small-12 medium-9 large-10 columns">
+									<div class="row numberstop">
+										<div class="small-3 text-left columns">-1.0</div>
+										<div class="small-6 text-center columns">0.0</div>
+										<div class="small-3 text-right columns">+1.0</div>
+									</div>
+									<div class="range-slider" data-slider="{{ dof.current }}" data-options="start: -100; end: 100;" data-dofname="{{ dof.name }}" data-dofmin="{{ dof.min }}" data-dofmid="{{ dof.mid }}" data-dofmax="{{ dof.max }}">
+										<span class="range-slider-handle" role="slider" tabindex="0"></span>
+										<span class="range-slider-active-segment"></span>
+										<input type="hidden">
+									</div>
+									<div class="row numbersbottom">
+										<div class="small-3 text-left columns">{{ dof.mid + dof.min }} &micro;s</div>
+										<div class="small-6 text-center columns">{{ dof.mid }} &micro;s</div>
+										<div class="small-3 text-right columns">{{ dof.mid + dof.max }} &micro;s</div>
+									</div>
+								</div>
+							</div>
+
+
+
+
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="ShutdownModal" class="reveal-modal tiny" data-reveal>
+		<div class="titlebar red">
+			<a class="close-reveal-modal"><span class="fa fa-close"></span></a>
+			<span class="fa fa-power-off"></span> Shut down
+		</div>
+		<div class="content">
+			<p>
+				Are you sure you wish to shut down Ono?<br/>
+				<span class="note">
+					<strong>Note:</strong> Never power off Ono without completely shutting down first! Cutting power without properly shutting down the operating system can result in a corrupt file system.
+				</span>
+			</p>
+			<div class="text-center">
+				<a href="#" class="button" id="btnShutdown"><span class="fa fa-power-off"></span> Yes, shut down Ono</a>
+			</div>
+		</div>
+	</div>
+	<div id="CloseAppModal" class="reveal-modal small" data-reveal>
+		<div class="titlebar">
+			<a class="close-reveal-modal"><span class="fa fa-close"></span></a>
+			<span class="fa fa-power-off"></span> Confirm
+		</div>
+		<div class="content">
+			<p>
+				Are you sure you wish to close this app?
+			</p>
+			<div class="text-center">
+				<a href="/closeapp" class="button"><span class="fa fa-close"></span> Yes, close app.</a>
+			</div>
+		</div>
+	</div>
+	&nbsp;
+	<div class="reveal-modal-bg" style="position: fixed;"></div>
+
+	<script src="static/js/vendor/jquery.js"></script>
+	<script src="static/js/foundation.min.js"></script>
+	<script src="static/js/jcanvas.min.js"></script>
+	<script src="static/js/numeral.min.js"></script>
+	<script src="VirtualModel/static/virtualModel.js"></script>
+
+	<script>
+		$(document).foundation();
+	</script>
+	<script>
+	$(document).ready(function() {
+		$("#btnShutdown").click(function(){
+			$("#ShutdownModal .content").load("/shutdown");
+		});
+	});
+	</script>
+
+</body>
+</html>
