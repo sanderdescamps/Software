@@ -132,7 +132,6 @@
 						<a href="#" data-reveal-id="ShutdownModal" class="action has-tip" data-tooltip aria-haspopup="true" data-options="disable_for_touch:true" title="Shut down"><div class="icon fa-power-off"></div></a>
 						<a href="/logout" class="action has-tip" data-tooltip aria-haspopup="true" data-options="disable_for_touch:true" title="Log out"><div class="icon fa-sign-out"></div></a>
 						<a href="/" class="action has-tip" data-tooltip aria-haspopup="true" data-options="disable_for_touch:true" title="Home"><div class="icon fa-home"></div></a>
-						<a href="#" id="virtualModel_button" class="action has-tip" data-tooltip aria-haspopup="true" data-options="disable_for_touch:true" title="Virtual Model"><div class="icon fa-smile-o"></div></a>
 					</div>
 				</div>
 			</div>
@@ -193,6 +192,9 @@
 
 
 					<div class="row">
+						<div class="large-7 large-push-5 columns">
+							<canvas id="virtualModel" width="600" height="600" style="width: 100%;"></canvas>
+						</div>
 						<div class="large-5 large-pull-7 columns" style="text-align: justify;">
 							<div style="height: 10rem;" class="show-for-large-up"></div>
 							<div class="panel">
@@ -297,25 +299,15 @@
 								</div>
 							</div>
 
-			</div>
+
+
+
+
+
+				</div>
 			</div>
 		</div>
 	</div>
-
-	<div id="virtualModelDiv" draggable="true" style= "z-index: 100; position: absolute; top: 0px; left: 0px; ">
-		<div class=page style="border: 2px solid #22B573;">
-		<div class="titlebar">
-			<a href="#" id="virtualModel_button2" class="closebutton"><span class="fa fa-close"></span></a>
-			Virtual Model
-		</div>
-		<canvas id="virtualModelCanvas" width="600" height="600"></canvas>
-	</div>
-</div>
-
-
-
-
-
 
 	<div id="ShutdownModal" class="reveal-modal tiny" data-reveal>
 		<div class="titlebar red">
@@ -359,18 +351,14 @@
 
 	<script>
 		$(document).foundation();
-
+		$(function() {
+    $( "#virtualModel" ).dialog();
+  });
 	</script>
 	<script>
 	$(document).ready(function() {
 		$("#btnShutdown").click(function(){
 			$("#ShutdownModal .content").load("/shutdown");
-		});
-		$('#virtualModel_button').click(function() {
-		        $('#virtualModelDiv').toggle();
-		});
-		$('#virtualModel_button2').click(function() {
-		        $('#virtualModelDiv').toggle();
 		});
 	});
 	</script>

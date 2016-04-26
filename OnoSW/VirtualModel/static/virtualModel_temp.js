@@ -7,10 +7,10 @@ var dof1 = 0;
 
 
 function resizeCanvas(){
-	w = $("#virtualModelCanvas").width();
+	w = $("#virtualModel").width();
 
-	$("#virtualModelCanvas").attr("width", w);
-	$("#virtualModelCanvas").attr("height", w);
+	$("#virtualModel").attr("width", w);
+	$("#virtualModel").attr("height", w);
 
 	updateVirtualModel();
 }
@@ -155,7 +155,34 @@ fn: function(ctx, params) {
 });
 
 function setupVirtualModel(){
-	$("#virtualModelCanvas")
+
+	$("[data-slider]").on("change.fndtn.slider", function(){
+		if( $(this).attr("data-slider") != $(this).data("lastpos") ){
+			var dofpos = $(this).attr("data-slider");
+			var dofmin = $(this).data("dofmin");
+			var dofmid = $(this).data("dofmid");
+			var dofmax = $(this).data("dofmax");
+			var dofus = dofmid;
+
+			$(this).closest(".sliderrow").find("[data-dof]").html(numeral(dofpos/100).format("+0.00"));
+
+			if(dofpos < 0){
+				dofus += (-dofpos / 100) * dofmin
+			}else if(dofpos > 0){
+				dofus += (dofpos / 100) * dofmax
+			}
+			$(this).closest(".sliderrow").find("[data-us]").html(numeral(dofus).format("0"));
+
+
+			$(this).data("lastpos", dofpos);
+			$("#dof1").html(numeral(dofpos/100).format("+0.00"));
+			dof1 = dofpos/100;
+			updateVirtualModel();
+		}
+	});
+
+
+	$("#virtualModel")
 	.drawImage({
 		layer: true,
 		name: "bg",
@@ -177,6 +204,7 @@ function setupVirtualModel(){
   leftCorner:0,
 	rightCorner:0
 	})
+//right eye
 	.drawEllipse({
 	layer:true,
 	name:"rightEyePupil",
@@ -207,6 +235,7 @@ function setupVirtualModel(){
 	x: w*0.405, y: w*0.16,
 	rotate:180
 	})
+//left eye
 	.drawEllipse({
 	layer:true,
 	name:"leftEyePupil",
@@ -230,11 +259,11 @@ function setupVirtualModel(){
 	x: w*0.605, y: w*0.16,
 	rotate:0
 	})
-updateVirtualModel();
+
 }
 
 function updateVirtualModel(){
-	$("#virtualModelCanvas")
+	$("#virtualModel")
 	.setLayer("bg", {
 		width: w,
 		height: w
@@ -288,12 +317,34 @@ function addError(msg){
 $(document).ready(function(){
 	$(window).resize(resizeCanvas);
 
-	w = $("#virtualModelCanvas").width();
-	$("#virtualModelCanvas").attr("width", w);
-	$("#virtualModelCanvas").attr("height", w);
+	w = $("#virtualModel").width();
+	$("#virtualModel").attr("width", w);
+	$("#virtualModel").attr("height", w);
 
 	setupVirtualModel();
 
-	$("#virtualModelCanvas").drawLayers();
+	$("#virtualModel").drawLayers();
 
+	$("#btnEnable").click(function(){
+		$.ajax({
+			dataType: "json",
+			url: "servos/enable",
+			success: function(data){
+				if(data.status == "error"){
+					addError(data.message);
+				}
+			}
+		});
+	});
+	$("#btnDisable").click(function(){
+		$.ajax({
+			dataType: "json",
+			url: "servos/disable",
+			success: function(data){
+				if(data.status == "error"){
+					addError(data.message);
+				}
+			}
+		});
+	});
 });
